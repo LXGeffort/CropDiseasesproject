@@ -1,0 +1,76 @@
+
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>百科</title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <link rel="stylesheet" href="/static/layuiadmin/layui/css/layui.css" media="all">
+  <link rel="stylesheet" href="/static/layuiadmin/style/admin.css" media="all">
+  <link rel="stylesheet" href="/static/layuiadmin/style/template.css" media="all">
+  <link rel="stylesheet" href="/static/css/tt.css?t={{ 当前时间 }}" media="all">
+</head>
+<body>
+ 
+
+<div class="layui-fluid layadmin-maillist-fluid" style="text-align: center;">
+  <div class="layui-row layui-col-space15" >
+    <div class="layui-inline">
+      <img src="/static/images/logo2.jpg" width="150" height="70">
+    </div>
+    <div class="layui-inline">
+        <div class="layui-block">
+            <h1 style="color:darkgreen ; font-size:45px"><strong>病虫害百科查询</strong></h1>
+        </div>
+    </div>
+  </div>
+  <div class="layui-row layui-col-space15" >
+    <div class="layui-col-md4">
+      {% if 身份=="管理员" %}
+      <div class="layui-input-inline layui-btn-container" style="width: auto;">
+        <a href="/wiki/new" class="layui-btn">新增条目</a>
+      </div>
+      {% endif %}
+    </div>
+    <div class="layui-col-md4">
+      <form class="layui-form wiki-search" action="/wiki/search">
+        <i class="layui-icon layui-icon-search caller-seach-icon caller-icon"></i>
+        <input type="text" name="查询病名" placeholder="请输入要查询的病虫害名称" class="layui-input caller-pl32">
+        <!-- <i class="layui-icon layui-icon-close caller-dump-icon caller-icon"></i> -->
+      </form>
+    </div>
+  </div>
+
+  <div class="layui-row layui-col-space30">
+     {% for entry in wiki %}
+     <div class="layui-col-md2 layui-col-sm4">
+        <div class="cmdlist-container">
+          <a id="选中条目" href="/wiki/details?病名={{ entry.病名 }}" cursor="pointer">
+            <img src={{ entry.图片 }} height="300">
+            <div class="wiki-list">{{ entry.病名 }}</div>
+          </a>
+        </div>
+      </div>
+     {% endfor %}
+  </div>
+
+</div>
+
+
+  <script src="/static/layuiadmin/layui/layui.js"></script>  
+  <script>
+  layui.config({
+    base: '/static/layuiadmin/' //静态资源所在路径
+  }).extend({
+    index: 'lib/index' //主入口模块
+  }).use(['index']);
+
+  //var 选中条目 = document.getElementById("选中条目");
+  //选中条目.href="http://www.baidu.com/";
+
+  </script>
+</body>
+</html>

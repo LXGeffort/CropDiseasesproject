@@ -1,0 +1,236 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>百科详情页</title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <link rel="stylesheet" href="/static/layuiadmin/layui/css/layui.css" media="all">
+  <link rel="stylesheet" href="/static/layuiadmin/style/admin.css" media="all">
+  <link rel="stylesheet" href="/static/css/tt.css?t={{ 当前时间 }}" media="all">
+</head>
+<body onload="根据不同情况显示不同页面()">
+
+  <div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+      <div class="layui-col-md12">
+        <div class="layui-card">
+          <div class="layui-card-body" pad15>
+            <div class="layui-row layui-col-space15">
+              <div class="layui-col-md8 layui-col-md-offset2">
+                <form class="layui-form wiki-detail" id="表单" name="表单" lay-filter="详情表单" action = "/wiki/new&update&delete&detalis" method = "post">
+                  <input hidden type="text" id="原病名" name="原病名">
+                  <div class="layui-form-item">
+                    <div class="layui-input-block">
+                      <button class="layui-btn" lay-submit lay-filter="返回">返回</button>
+                      <button class="layui-btn" style="float: right;" id="删除" lay-submit lay-filter="删除该条目">删除该条目</button>
+                      <button class="layui-btn" style="float: right;" id="编辑" lay-submit lay-filter="编辑">编辑</button>
+                      <button class="layui-btn" style="float: right;" id="提交" lay-submit lay-filter="提交表单">提交表单</button>
+                    </div>
+                  </div>
+                 <div class="layui-form-item layui-row">
+                    <div class="layui-col-md4">
+                      <input type="text" id="病名" name="病名" value="" class="layui-input 病名">
+                    </div>
+                    <div class="图片 layui-col-md4 layui-col-md-offset4">
+                      <div class="layui-upload-list">
+                        <img class="layui-upload-img" id="图片预览">
+                      </div>
+                      <button type="button" class="layui-btn" id="选择图片">选择图片</button> 
+                    </div>
+                    <input hidden id="base64" type = "text" name = "图片" placeholder = "病名" /><br>
+                  </div>
+                  <div class="layui-form-item layui-form-text">
+                    <div class="标题">
+                      <!-- <img class="icon" src="img/bk_icon_whzz.png" alt=""> -->
+                      <span>危害</span>
+                    </div>
+                    <div class="layui-input-block">
+                      <textarea id="危害" name="危害" placeholder="请输入内容" class="layui-textarea"></textarea>
+                    </div>
+                  </div>
+                  <div class="layui-form-item layui-form-text">
+                    <div class="标题">
+                      <span>症状</span>
+                    </div>
+                    <div class="layui-input-block">
+                      <textarea id="症状" name="症状" placeholder="请输入内容" class="layui-textarea"></textarea>
+                    </div>
+                  </div>
+                  <div class="layui-form-item layui-form-text">
+                    <div class="标题">
+                      <span>防治方式</span>
+                    </div>
+                    <div class="layui-input-block">
+                      <textarea id="防治方式" name="防治方式" placeholder="请输入内容" class="layui-textarea"></textarea>
+                    </div>
+                  </div>
+                  <div class="layui-form-item layui-form-text layui-form-pane">
+                    <div class="标题">
+                      <span>其他说明</span>
+                    </div>
+                    <div class="layui-input-block">
+                      <textarea id="其他说明" name="其他说明" placeholder="请输入内容" class="layui-textarea"></textarea>
+                    </div>
+                  </div>
+                  <div class="layui-form-item">
+                    <div class="标题">
+                      <span>访问次数</span>
+                    </div>
+                    <div class="layui-input-inline">
+                      <input type="number" id="访问次数" name="访问次数" value="" lay-verify="" class="layui-input">
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/static/layuiadmin/layui/layui.js"></script>  
+  <script>
+  layui.config({
+    base: '/static/layuiadmin/' //静态资源所在路径
+  }).extend({
+    index: 'lib/index' //主入口模块
+  }).use(['index', 'set']);
+
+  layui.use('form', function(){
+    var $ = layui.jquery;
+    var form = layui.form;
+
+    //监听提交
+    form.on('submit(编辑)', function(data){
+      var 表单 = document.getElementById("表单");
+      表单.action="/wiki/details";
+      console.log(表单.action);
+      //return false;
+    });
+
+    form.on('submit(提交表单)', function(data){
+      console.log("数据:"+data);
+
+      $('#base64').attr('value', $('#图片预览').attr('src')); //将图片二进制放入表单中
+
+      var 表单 = document.getElementById("表单");
+      表单.action="/wiki/new";
+      {% if entry %}
+      表单.action="/wiki/update";
+      {% endif %}
+      console.log(表单.action);
+      layer.msg(JSON.stringify(data.field));
+      console.log(data.elem) //被执行事件的元素DOM对象，一般为button对象
+      console.log(data.form) //被执行提交的form对象，一般在存在form标签时才会返回
+      console.log(data.field) //当前容器的全部表单字段，名值对形式：{name: value}
+      //return false;
+    });
+
+    form.on('submit(删除该条目)', function(data){
+        var choice=confirm('确认删除？');
+        var 表单 = document.getElementById("表单");
+        表单.action="/wiki/delete";
+        console.log(表单.action);
+        console.log(choice);
+        return choice;
+    });
+
+    form.on('submit(返回)', function(data){
+        表单.action="/wiki/";
+        console.log(表单.action);
+    });
+
+
+  });
+
+
+  function 根据不同情况显示不同页面(){
+
+    layui.use('element', function(){
+      var $ = layui.jquery;
+      var entry="{{ entry }}";
+      var editable="{{ editable }}";
+      var 身份="{{ 身份 }}";
+      console.log("根据不同情况显示不同页面"+entry+editable+身份);
+      //默认为查看
+      $('#编辑').hide();
+      $('#删除').hide();
+      $('#提交').hide();
+      $('#选择图片').hide();
+      $('#病名').attr('readonly', true);
+      $('#危害').attr('readonly', true);
+      $('#症状').attr('readonly', true);
+      $('#防治方式').attr('readonly', true);
+      $('#其他说明').attr('readonly', true);
+      $('#访问次数').attr('readonly', true);
+
+      //js中反引号表示
+      {% if entry %}
+        $('#原病名').val(`{{ entry.病名 }}`);
+        $('#病名').val(`{{ entry.病名 }}`);
+        $('#危害').val(`{{ entry.危害 }}`);
+        $('#症状').val(`{{ entry.症状 }}`);
+        $('#防治方式').val(`{{ entry.防治方式 }}`);
+        $('#其他说明').val(`{{ entry.其他说明 }}`);
+        $('#访问次数').val("{{ entry.访问次数 }}");
+        $('#图片预览').attr('src', "{{ entry.图片 }}");
+      {% endif %}
+
+      // var 身份="用户";
+      //var 身份="管理员";
+      if(身份=="管理员"){
+        //如果是新增或者编辑
+        {% if editable or not entry%}
+          $('#病名').attr('readonly', false);
+          $('#危害').attr('readonly', false);
+          $('#症状').attr('readonly', false);
+          $('#防治方式').attr('readonly', false);
+          $('#其他说明').attr('readonly', false);
+          $('#访问次数').attr('readonly', false);
+          
+          $('#选择图片').show();
+          $('#提交').show();
+        {% endif %}
+        {% if entry and not editable %}
+          $('#编辑').show();
+          $('#删除').show();
+        {% endif %}
+      }
+
+      //设置文本域内容全部显示且无滚动条
+      $('textarea').filter(".layui-textarea").each(function() {
+        this.setAttribute('style', 'height:' + (this.scrollHeight) + 'px;overflow-y:hidden;');
+      }).on('input', function () {
+        this.style.height = 'auto';
+        this.style.height = (this.scrollHeight) + 'px';
+      })
+    });
+  };
+  
+  layui.use('upload', function(){
+            var $ = layui.jquery
+            ,upload = layui.upload;
+            
+            var uploadInst = upload.render({
+              elem: '#选择图片'
+              ,accept:'images'
+
+              ,url: '/upload' //上传接口url,在这里似乎没什么用了
+              ,auto: false //不自动上传
+              ,choose: function(obj){
+              //预览图片，不支持ie8 
+              obj.preview(function(index, file, result){
+                console.log(result)
+                  $('#图片预览').attr('src', result); //图片链接（base64）
+                });
+              }
+            });
+            
+        });
+  </script>
+</body>
+</html>

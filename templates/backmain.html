@@ -1,0 +1,262 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+
+  <!--以下设置不缓存页面-->
+
+  <!--设置过期时间设置0为直接过期并清除缓存-->
+  <meta http-equiv="Expires" content="0">
+  <!--设置不缓存页面-->
+  <meta http-equiv="Pragma" content="no-cache">
+  <!--设置不修改消息存储-->
+  <meta http-equiv="Cache-control" content="no-cache">
+  <!--同上-->
+  <meta http-equiv="Cache" content="no-cache">
+
+
+
+  <title>layuiAdmin 主页示例模板一</title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <link rel="stylesheet" href="../static/layuiadmin/layui/css/layui.css" media="all">
+  <link rel="stylesheet" href="../static/layuiadmin/style/admin.css" media="all">
+  <script src="../static/layuiadmin/layui/layui.js"></script>
+</head>
+<body>
+
+  <div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+      <div class="layui-col-md4">
+
+      <div class="layui-card">
+          <div class="layui-card-header">用户信息</div>
+          <div class="layui-card-body">
+            {% if entry %}
+            <table class="layui-table">
+              <colgroup>
+                <col width="100">
+                <col>
+              </colgroup>
+              <tbody>
+                <tr>
+                  <td>用户名</td>
+                  <td>
+                    {{ entry.nickname }}
+                  </td>
+                </tr>
+                <tr>
+                  <td>用户姓名</td>
+                  <td>{{ entry.name }}</td>
+                </tr>
+                <tr>
+                  <td>联系方式</td>
+                  <td>{{ entry.tel }}</td>
+                </tr>
+                <tr>
+                  <td>用户所在地区</td>
+                  <td>{{ entry.location }}</td>
+                </tr>
+              </tbody>
+            </table>
+              {% endif %}
+          </div>
+        </div>
+
+        <div class="layui-card">
+          <div class="layui-card-header">病虫害诊断步骤</div>
+          <div class="layui-card-body">
+          <ul class="layui-timeline">
+              <li class="layui-timeline-item">
+                  <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+                  <div class="layui-timeline-content layui-text">
+                      <h3 class="layui-timeline-title">步骤1——上传图片</h3>
+                      <p>点击上传图片，选择您想要进行识别的作物病虫害图片
+          <br>点击上传图片，等待病虫害识别结果</p>
+                  </div>
+              </li>
+              <li class="layui-timeline-item">
+                  <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+                  <div class="layui-timeline-content layui-text">
+                      <h3 class="layui-timeline-title">步骤2——观测结果</h3>
+                      <p>病虫害识别结果会显示在主页右方，根据识别出的作物病害可以做出相应防止措施</p>
+                  </div>
+              </li>
+              <li class="layui-timeline-item">
+              <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+              <div class="layui-timeline-content layui-text">
+                  <h3 class="layui-timeline-title">步骤3——建议措施</h3>
+                  <p>识别完成后，您能在主页点击病虫害百科，查询该病例的相关信息，以此有效进行防治措施
+                  </p>
+              </div>
+              </li>
+          </ul>
+          </div>
+          </div>
+      </div>
+      <div class="layui-col-md8">
+        <div class="layui-card">
+          <div class="layui-card-header">上传图片</div>
+          <div class="layui-card-body">
+            <!--方式1对应代码-->
+            <div class="layui-upload">
+              <button type="button" class="layui-btn" id="test1">上传图片</button> <button type="button" class="layui-btn layui-btn-normal" id="test9">开始上传</button>
+              <div class="layui-upload-list">
+                <img class="layui-upload-img" id="demo1" style="width:100px">
+                <p id="demoText"></p>
+
+              </div>
+            </div>
+
+            <!--方式2对应代码-->
+
+<!--            <form action="http://localhost:5000/upload" method="POST" enctype="multipart/form-data">-->
+<!--              <input type="file" name="file" accept=".jpg,.png" />-->
+<!--              <input type="submit" />-->
+<!--            </form>-->
+          </div>
+        </div>
+        <div class="layui-row layui-col-space15">
+          <div class="layui-col-md5">
+            <div class="layui-card">
+              <div class="layui-card-header">
+                示例图片
+              </div>
+              <div class="layui-card-body">
+                <img id="" src="/static/images/xiaomai1.jpg"  height="392px" width="450px">
+              </div>
+
+            </div>
+          </div>
+          <div class="layui-col-md7">
+            <div class="layui-card">
+              <div class="layui-card-header">
+                病虫害识别结果及准确率
+              </div>
+              <div class="layui-card-body">
+                <!-- PID06识别结果再加准确率 -->
+                <div class="layui-elem-quote layui-quote-nm" style="background-color:cornflowerblue;width:500px;height:100px">
+                <div style="color:white;font-size: 30px" id="result">识别结果：{{ result }}</div><br>
+                <div style="color:white;font-size: 20px">准确率</div><br>
+                <div class="layui-progress" lay-showPercent="yes" lay-filter="accuracy" >
+  					<div class="layui-progress-bar " lay-percent="0%" id="accuracy1" style="background-color:darkblue;width:{{accuracy}}%;">
+						<h class="layui-progress-text" id="accuracy2" style="color:white;font-size:20px">{{accuracy}}%</h>
+					</div>
+                </div>
+
+			<script>
+				layui.use('element', function(){
+					var element = layui.element;
+                    element.progress('accuracy',{{accuracy}}+'%')
+				});
+				//方式1、  layui方式，上传，但是上传之后upload接口记得返回json，再解析设置到 识别结果即可。
+				layui.use(['element','upload'], function(){
+                    var $ = layui.jquery
+                    ,upload = layui.upload;
+                    var element = layui.element;
+                    //普通图片上传
+                    var uploadInst = upload.render({
+                      elem: '#test1'
+                      ,accept:'images'
+
+                      ,url: '/upload' //改成您自己的上传接口
+                      ,auto: false
+                      ,choose: function(obj){
+                        //预读本地文件示例，不支持ie8
+                      obj.preview(function(index, file, result){
+                          $('#demo1').attr('src', result); //图片链接（base64）
+                          var demoText = $('#demoText');
+                          demoText.html('<button class="layui-btn layui-btn-danger layui-btn-sm demo-delete" style="margin-top:10px;margin-left: 15px">删除图片</button>');
+                          demoText.find('.demo-delete').on('click', function(){
+                            $("#demo1").attr('src', '');
+                            demoText.html('')
+                          });
+                        });
+                      }
+                      ,bindAction: '#test9'
+                      ,done: function(res){
+                        //如果上传失败
+                        if(res.code > 0){
+                          return layer.msg('上传失败');
+                        }
+                        //上传成功
+                        console.log(res)
+                        $("#demo1").attr('src', '');
+                        $("#demoText").html('');
+                        $('#result').html('识别结果：'+res.result);
+                        $('#accuracy1').css('width：'+res.accuracy+"%");
+                        $('#accuracy1 .layui-progress-text').html(res.accuracy+"%");
+
+                        element.progress('accuracy',res.accuracy+'%')
+
+                        $("#选中条目").attr('href', '/wiki/details?病名='+res.病名);
+                        $("#百科图片").attr('src', res.图片);
+                        $("#百科提示").html('请于病虫害百科中查看详情</br>');
+                      }
+                      ,error: function(){
+                        //演示失败状态，并实现重传
+                        var demoText = $('#demoText');
+                        demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
+                        demoText.find('.demo-reload').on('click', function(){
+                          uploadInst.upload();
+                        });
+                      }
+                    });
+                });
+
+			</script>
+		</div>
+                <div class="layui-row">
+                  <div class="layui-col-md7">
+                    <div class="cmdlist-container">
+<!--                      <a id="选中条目" href="/wiki/details?病名=" cursor="pointer">-->
+<!--                        <img id="百科图片" src="../static/images/稻曲病.jpg"  height="300">-->
+<!--                      </a>-->
+                        <img id="百科图片" src="../static/images/xiaomai2.jpg"  height="250">
+                    </div>
+                    
+                  </div>
+                  <div class="layui-col-md5" style="text-align: center;">
+                    <p style="font:700 30px bold;color: black;margin-top: 40%;margin-left: 50%;" id="百科提示"></p>
+                  </div>
+                </div>
+                
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      </div>
+  </div>
+
+<!--  <script src="../static/layuiadmin/layui/layui.js"></script>-->
+<!--  <script>-->
+<!--  layui.config({-->
+<!--    base: '../static/layuiadmin/' //静态资源所在路径-->
+<!--  }).extend({-->
+<!--    index: 'lib/index' //主入口模块-->
+<!--  }).use(['index', 'sample']);-->
+
+<!--  //上传图片功能-->
+<!--  layui.use('upload', function(){-->
+<!--  var upload = layui.upload;-->
+
+<!--  //执行实例-->
+<!--  var uploadInst = upload.render({-->
+<!--    elem: '#uploader' //绑定元素-->
+<!--    ,url: '/upload' //上传接口-->
+<!--    ,done: function(res){-->
+<!--      //上传完毕回调-->
+<!--    }-->
+<!--    ,error: function(){-->
+<!--      //请求异常回调-->
+<!--    }-->
+<!--  });-->
+<!--});-->
+
+<!--  </script>-->
+</body>
+</html>

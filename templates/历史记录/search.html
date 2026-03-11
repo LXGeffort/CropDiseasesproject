@@ -1,0 +1,187 @@
+
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <!--以下设置不缓存页面-->
+  <!--设置过期时间设置0为直接过期并清除缓存-->
+  <meta http-equiv="Expires" content="0">
+  <!--设置不缓存页面-->
+  <meta http-equiv="Pragma" content="no-cache">
+  <!--设置不修改消息存储-->
+  <meta http-equiv="Cache-control" content="no-cache">
+  <!--同上-->
+  <meta http-equiv="Cache" content="no-cache">
+  <title>历史查询</title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <link rel="stylesheet" href="../../static/layuiadmin/layui/css/layui.css" media="all">
+  <link rel="stylesheet" href="../../static/layuiadmin/style/admin.css" media="all">
+    <link rel="stylesheet" href="../../static/css/tt.css" media="all">
+  <script src="../../static/layuiadmin/layui/layui.js"></script>
+</head>
+<body>
+      {%- for category, message in get_flashed_messages(with_categories = true) %}
+         <div class = "alert alert-danger">
+            {{ message }}
+         </div>
+      {%- endfor %}
+<!--图片-->
+    <div class="layui-form-item" style="text-align: center;" >
+        <div class="layui-inline">
+            <img src="../../static/images/logo2.jpg" style="height: 100px;width: 200px">
+        <!--是否能加载出图片，光标移动到png几个字母上，在pycharm能够显示出来，表示本句代码的路径没问题-->
+        </div>
+        <div class="layui-inline">
+            <div class="layui-block">
+                <h1 style="color:darkgreen ; font-size:50px"><strong>历史记录查询</strong></h1>
+            </div>
+        </div>
+    </div>
+  <div class="layui-fluid">
+<!--病虫害种类查询-->
+      <div class="layui-form-item" style="text-align: center;" >
+
+
+     <form action = "/search/PredictResult" method = "get">
+          <input style="width:600px;height:30px;border-radius: 6px;font-size:30px" type = "text" name = "病名" placeholder = "按病虫害种类搜索" />
+          <input class="layui-btn layui-btn-radius" type = "submit" value = "开始搜索" style="border-radius: 15px;font-size:25px"/>
+      </form><!--
+                <button class="layui-btn layui-btn-radius" >
+
+                <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>
+            </button>
+
+
+          <div class="layui-inline" style="width:500px" >
+            <div class="layui-input-inline">
+              <input type="text" name="病名" id="inputTags" style="width:500px" placeholder="按病虫害种类搜索" autocomplete="off" class="layui-input">
+            </div>
+          </div>
+          <div class="layui-inline">
+               <form action = "/search-user/PredictResult" method = "get" >
+              <input type = "submit"  value = "开始搜索" />
+                   </form>
+          </div>-->
+
+
+
+      </div>
+    <div class="layui-card" style="margin:30px 150px 0px 150px;border:2px solid cornflowerblue">
+      <div class="layui-form layui-card-header " style="text-align: center;" >
+<!--时间查询-->
+                           <div class="layui-form"  wid100>
+                            <div class="layui-form-item">
+                                <div class="layui-inline">
+                                    <form action = "/search/Timesearch" method = "get">
+                                    <!--<div class="layui-input-inline" style="color:black;font-size:30px">输入或者选择从几天开始的</div>-->
+                                        <div class="layui-input-inline" style="border-radius: 6px;border:1px solid grey">
+                                        <input type="text" autocomplete=“off” class="layui-input" name="开始时间" id="test-laydate-start" style="color:black;font-size:30px" placeholder="开始日期">
+
+                                    </div>
+                                    <div class="layui-form-mid">——</div>
+                                    <div class="layui-input-inline" style="border-radius: 6px;border:1px solid grey">
+                                        <input type="text" autocomplete=“off” class="layui-input" name="结束时间" id="test-laydate-end" style="color:black;font-size:30px" placeholder="结束日期"/>
+                                    </div>
+                                    <input class="layui-btn layui-btn-radius" type = "submit" value = "日期搜索" style="border-radius: 15px;font-size:25px"/>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+          <script>
+layui.use('laydate', function(){
+  var laydate = layui.laydate;
+
+  var insStart =laydate.render({
+    elem: '#test-laydate-start' //指定元素
+      ,done: function(value, date){
+        //更新结束日期的最小日期
+        insEnd.config.min = lay.extend({}, date, {
+          month: date.month - 1
+        });
+        //自动弹出结束日期的选择器
+       insEnd.config.elem[0].focus();
+      }
+  });
+  var insEnd =laydate.render({
+    elem: '#test-laydate-end' //指定元素
+      ,done: function(value, date){
+        //更新开始日期的最大日期
+        insStart.config.max = lay.extend({}, date, {
+          month: date.month - 1
+        });
+      }
+  });
+});</script>
+
+      </div>
+
+      <div class="layui-form layui-card-body " style="margin:10px 0px 0px 0px;">
+          <div class="layui-form layui-border-box layui-table-view" lay-filter="LAY-table-3" lay-id="LAY-app-content-comm" style=" ">
+              <div class="layui-table-box">
+                  <div class="layui-table-header ">
+                      <table cellspacing="0" cellpadding="0" border="0" class="layui-table">
+                          <thead>
+                          <tr class="layui-fluid">
+                              <th>
+                                  <div style="width: 400px" align="center">
+                                      <span style="color:black;font-size:30px">查询ID</span>
+                                  </div>
+                              </th>
+                              <th >
+                                  <div style="width: 400px" align="center">
+                                      <span style="color:black;font-size:30px">使用时间</span>
+                                  </div>
+                              </th>
+                              <th >
+                                  <div  style="width: 400px" align="center">
+                                      <span style="color:black;font-size:30px">病虫害种类</span>
+                                  </div>
+                              </th>
+                              <th >
+                                  <div  style="width: 350px" align="center">
+                                      <span style="color:black;font-size:30px">操作</span>
+                                  </div>
+                              </th>
+                          </tr>
+                          </thead>
+                      </table>
+                  </div>
+
+                  <div class="layui-table-body layui-table-main">
+                      <table cellspacing="0" cellpadding="0" border="0" class="layui-table ">
+                          <tbody>
+                          {% for entry in history %}
+                              <form action = "/search/details" method = "get">
+                          <tr data-index="0" class="">
+                              <td>
+                                  <input readonly="readonly" type="text" value="{{entry.查询ID}}" name="详情的ID"  style="text-align:center;vertical-align:middle;width: 400px;color:black;font-size:30px" >
+                              </td>
+                              <td>
+                                  <div style="width: 400px;color:black;font-size:30px" align="center">{{ entry.使用时间 }}</div>
+                              </td>
+                              <td>
+                                  <div style="width: 400px;color:black;font-size:30px" align="center">{{entry.病名}}</div>
+                              </td>
+                              <td>
+                                  <div style="width: 350px;color:black;font-size:30px" align="center">
+                                      <input class="layui-btn layui-btn-radius" type = "submit" value = "查看详情" style="border-radius: 15px;font-size:25px"/>
+                                  </div>
+                              </td>
+                          </tr>
+                              </form>
+                          {%endfor%}
+                          </tbody>
+                      </table>
+                  </div>
+              </div>
+          </div>
+      </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
+

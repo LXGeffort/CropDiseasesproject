@@ -1,0 +1,148 @@
+.main{
+    position: relative;
+    max-width: 1200px;
+    text-align: left;
+}
+.main .Logo img{
+    width:450px;
+    height:220px;
+}
+
+.main .slogan p{
+    margin-top: 18%;
+    color: white;
+    letter-spacing: 2px;
+    font: 500 60px bold;
+    font-family: "楷体";
+}
+.main .reg_log{
+    color: #fff;
+    font: 500 30px bold;
+}
+
+.main .reg_log a{
+    color: #fff;
+    letter-spacing: 5px;
+    font: 500 30px bold;
+}
+
+.main .reg_log a:hover {
+    color: #dbdbdb;
+    letter-spacing: 5px;
+    font: 500 30px bold;
+}
+
+.index{
+    background-color: aqua;
+}
+.index .barText{
+    float: left;
+}
+.index .barText a:hover{
+    color: white;
+}
+.index .layui-header{
+    /*background-color: rgb(250, 180, 90);*/
+    background-color: rgba(0, 128, 0, 0.8);
+    padding:0 30px;
+}
+.index .layui-header a, .layui-layout-admin .layui-header a cite{
+    color: white;
+}
+.index .layui-header a{
+    color: white;
+}
+.index .Logo a img{
+    width:120px;
+    height:50px;
+    margin-left:0px;
+}
+.index .Title a{
+    margin-left: 100px;
+    font: 30px Arial, sans-serif;
+}
+.index .Title a:hover{
+    color: black;
+}
+.index .HeadText{
+    position: relative;
+    margin-left: 150px;
+    margin-top: 12px;
+}
+.index .HeadText a{
+    font: 18px Arial, sans-serif;
+}
+
+.index .右边功能跳转{
+    float: right;
+}
+
+
+.index .body{
+    position:absolute;
+    left:0px;
+    right:0;
+    top:50px;
+    bottom:0;
+    z-index:998;
+    width:auto;
+    overflow-y:auto;
+    box-sizing:border-box
+}
+
+
+.wiki-search{  padding:0px}
+.wiki-search .caller-icon{font-size:20px;position:absolute;top:15px}
+.wiki-search .caller-seach-icon{right:15px}
+.wiki-search .caller-pl32{padding:0 30px}
+
+.wiki-list{
+    position: relative;
+    text-align: center;
+    color: rgb(0, 0, 0);
+    font: 20px bold;
+}
+
+.wiki-detail{
+    position: relative;
+    /* text-align: center; */
+    font: 20px bold;
+}
+.wiki-detail .layui-upload-img{
+    margin-top: 5%;
+    max-width: 500px;
+    max-height: 500px;
+}
+.wiki-detail .layui-input,.layui-textarea{
+    border: none;
+    line-height: 30px;
+    letter-spacing: 1px;
+}
+.wiki-detail .layui-input:read-write ,.layui-textarea:read-write{
+    border: 1px solid rgb(134, 125, 109);
+}
+.wiki-detail .layui-input-block,.layui-input-inline{
+    margin-left: 0px;
+}
+
+.wiki-detail .标题{
+    color: black;
+    background-color: rgba(60, 103, 219, 0.219);
+    font: 900 25px bold;
+    text-indent:1em;
+}
+.wiki-detail .病名{
+    position: relative;
+    margin-top: 30%;
+    text-indent: 1em;
+    color: rgb(70, 46, 46);
+    font: 500 60px bold;
+    font-family: "楷体";
+    width: fit-content;
+    height: fit-content;
+}
+.wiki-detail .图片{
+    position: relative;
+    right: 10%;
+    text-align: center;
+}

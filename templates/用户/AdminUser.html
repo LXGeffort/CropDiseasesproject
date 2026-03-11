@@ -1,0 +1,404 @@
+<head>
+    <meta charset="UTF-8">
+    <title>用户管理</title>
+    <meta http-equiv="Expires" content="0">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Cache-Control" content="no-cache">
+    <meta http-equiv="Cache" content="no-cache">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="/static/css/layui.css">
+    <link rel="stylesheet" href="/static/layuiadmin/layui/css/modules/layer/default/layer.css">
+    <link rel="stylesheet" href="/static/layuiadmin/layui/css/modules/laydate/default/laydate.css">
+    <link rel="stylesheet" href="/static/css/tt.css?t={{ time }}" media="all">
+</head>
+<body>
+<div class="layui-fluid layadmin-maillist-fluid" style="text-align: center;">
+    <div class="layui-row layui-col-space15" >
+    <div class="layui-inline">
+      <img src="/static/images/logo2.jpg" width="150" height="70" alt="">
+    </div>
+    <div class="layui-inline">
+        <div class="layui-block">
+            <h1 style="color:darkgreen ; font-size:45px"><strong>普通用户信息管理</strong></h1>
+        </div>
+        <div class="layui-block">
+            <h3 style="color:darkgrey;font-size:15px">若要修改/删除，请先查找</h3>
+        </div>
+
+    </div>
+  </div>
+    <!--搜索条件开始-->
+    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;" >
+        <legend>查询条件</legend>
+    </fieldset>
+
+    <form class="layui-form" action="" method="post" id="formTest">
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">用户名</label>
+                <div class="layui-input-inline">
+                    <input id='nickname' type="text" name="nickname" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+        </div>
+
+
+        <div class="layui-form-item" style="text-align: center;">
+            <div class="layui-input-block">
+                <button type="submit" class="layui-btn " id="doSubmit" lay-submit="" lay-filter="demo1">查询</button>
+                <button type="reset" class="layui-btn " id="doReset">重置</button>
+            </div>
+        </div>
+
+    </form>
+
+    <!--搜索条件结束-->
+    <!--数据表格开始-->
+    <div class="layui-row layui-col-space15" >
+    <div type="text/html" style="display: none" id="userToolBar">
+        <a type="submit" class="layui-btn" lay-filter="add" lay-event="add">添加用户</a>
+    </div>
+
+    <div id="userBar" style="display: none;">
+        <a class="layui-btn layui-btn-sm" lay-event="edit" id="modify">编辑</a>
+        <a class="layui-btn layui-btn-danger layui-btn-sm" lay-event="del">删除</a>
+    </div>
+    </div>
+
+
+    <table class="'layui-hide" id="userTable" lay-filter="userTable"></table>
+    <!--数据表格结束-->
+    <!--添加和修改弹出层开始-->
+        <div style="display:none;padding: 20px" id="addnewdata">
+            <form class="layui-form" action="" method="post" lay-filter="dataFrm" id="dataFrm">
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">姓名</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="name" autocomplete="off" class="layui-input">
+                            </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">用户名</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="nickname" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">性别</label>
+                    <div class="layui-input-block">
+                        <input type="radio" name="sex" value="男" title="男" checked="">
+                        <input type="radio" name="sex" value="女" title="女">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">联系方式</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="tel" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+
+                    <div class="layui-inline">
+                        <label class="layui-form-label">地区</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="location" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                <div class="layui-inline">
+                        <label class="layui-form-label">密码</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="password" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-form-item" style="text-align: center;">
+                    <div class="layui-input-block">
+                        <button type="button" class="layui-btn layui-btn-normal layui-btn-sm layui-icon layui-icon-release" id="dosubmit1" lay-submit="" lay-filter="dosubmit1">提交</button>
+                        <button type="reset" class="layui-btn layui-btn-warm layui-btn-sm layui-icon layui-icon-refresh" id="doclose" lay-submit="" lay-filter="doclose" lay-event="doclose">重置</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+</div>
+    <!--添加和修改弹出层结束-->
+
+    <script src="/static/layui.js"></script>
+    <script type="text/javascript">
+        layui.use(["jquery",'form','element','layer','table','laydate'],function() {
+            let $ = layui.jquery;
+            let form = layui.form;
+            let element = layui.element;
+            let layer = layui.layer;
+            let table = layui.table;
+            let laydate = layui.laydate;
+
+
+            //渲染数据表格
+            var tableIns = table.render({
+                elem: '#userTable', //渲染的目标对象
+                {#url:'/getuser',#}
+                data: [],
+                method:"GET",
+                initSort: {
+                    field: 'nickname',
+                    type: 'asc'
+                },
+                size:'lg',
+                title: '用户数据登录表',//数据导出的标题
+                page: true,//是否启动分页
+                toolbar: "#userToolBar",//表格的工具条
+                defaultToolbar: ['filter', 'exports', 'print'],
+                hight: "full-300",
+                down: function (res, curr, count) {
+                    alert(res);//后台url返回的json串
+                    alert(curr);//当前页
+                    alert(count);//数据总条数
+                },
+                loading: true,
+
+
+                cols: [
+                    [{title: '数据表格增删改查', align:'center', colspan: 30}],
+                    [ //列表数据
+                    {field: 'name', title: '姓名', edit: true, align: 'center'},//edit可编辑
+                    {field: 'nickname', title: '用户名', sort: true}, //field设定字段名，title设定标题名称,sort排页面已有数据
+                    {field: 'sex', title: '性别', align: 'center', edit: 'text', sort: true},
+                    {field: 'tel', title: '联系方式', align: 'center', edit: 'text', width: 300},
+                    {field: 'location', title: '城市', align: 'center',edit: 'text'},
+                    {fixed: 'right', title: '操作', align: 'center', toolbar: "#userBar"}
+                ]],
+                id:"userTable"
+
+
+
+            });
+
+            //查询
+            form.on('submit(demo1)', function (data) {
+                //发送一个ajax
+                $.ajax({
+                    url: '/user/search',
+                    type: 'post',
+                    data: {'data': data.field},
+                    dataType: 'json',
+                    success: function (res) {
+                        let datalist = res.data;
+                        let datalen = datalist.length;
+                        if (datalen === 0){
+                            table.reload('userTable', {
+                            data: ["未查询到数据"]
+                        })
+                        } else {
+                            console.log(datalist);
+                             table.reload('userTable', {
+
+                                 data:datalist
+
+                        })
+                        }
+                    }
+                });
+                return false;
+            });
+            form.on('#doReset', function (data) {
+                // console.log(site);
+                //发送一个ajax
+                console.log('2222222');
+                $('#formTest')[0].reset();
+                return false;
+            });
+
+            //头工具栏事件
+            table.on('toolbar(userTable)', function (obj) {
+                let tablelist = table.cache['userTable'];
+                switch (obj.event) {
+                    case 'add':
+                        console.log(tablelist);
+                        openAddUser(obj,tablelist);
+                        break;
+                    case 'batch_del':
+                        batch_del(obj,tablelist);
+                        break;
+                }
+
+            });
+            var url;
+            var mainIndex;
+//打开添加页面
+            function openAddUser(obj,tablelist) {
+                mainIndex = layer.open({
+                    type: 1,
+                    title: "添加用户",
+                    content: $("#addnewdata"),
+                    area: ['800px', '400px'],
+                    success: function (index) {
+                        form.on("submit(dosubmit1)", function (message) {
+                            let jsondata = JSON.stringify(message.field);
+                            alert('ok');
+                            $.ajax({
+                                url: '/user/add',
+                                type: "POST",
+                                dataType: "json",
+                                data: {'data': jsondata},
+                                beforeSend: function () {
+                                    layer.load({
+                                        shade: [0.1, '#fff'] //0.1透明度的白色背景
+                                    });
+                                },
+                                success: function (res) {
+                                    let datalist = res.data;
+                                    alert(datalist);
+                                    let returnCode = res.code;
+                                    layer.msg("添加成功", {icon: 1});
+                                        tablelist.push(datalist[0]);
+                                        table.reload('userTable',{
+                                            data: tablelist
+                                        });
+                                        layer.closeAll();
+
+
+                                }
+                            });
+                            return false;
+                        })
+                    }
+                })
+            }
+            //头工具栏事件
+            table.on('toolbar(userTable)', function (obj) {
+                let tablelist = table.cache['userTable'];
+                switch (obj.event) {
+                    case 'add':
+                        openAddUser(obj,tablelist);
+                        break;
+                    case 'batch_del':
+                        batch_del(obj,tablelist);
+                        break;
+                }
+            });
+
+            //监听工具条
+            table.on('tool(userTable)', function (obj) { //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
+                var data = obj.data; //获得当前行数据
+                var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+                var jsonData = JSON.stringify(data);
+                let tablelist = table.cache['userTable'];
+
+                if (layEvent === 'del') {
+                //删除数据代码
+
+                    layer.confirm('真的删除行么', {icon: 3, title: '提示'}, function (index) {
+                        $.ajax({
+                            url: "/user/del",
+                            type: "POST",
+                            dataType: "json",
+                            data: {'data': jsonData},
+                            beforeSend: function () {
+                                layer.load({
+                                    shade: [0.1, '#fff'] //0.1透明度的白色背景
+                                });
+                            },
+
+                            success: function (res) {
+                                let returnCode = res.code;
+                                console.log(returnCode);
+                                layer.closeAll('loading');
+                                    // layer.load(2);
+                                layer.msg("删除成功", {icon: 6});
+                                setTimeout(function () {
+                                        layer.closeAll();
+                                        table.reload('userTable', {
+                                            data: tablelist
+                                        })
+                                    }, 1000);
+
+                            }
+                        });
+                        layer.close(index);
+                    });
+
+                } else if (layEvent === 'edit') { //编辑
+                    //do something
+                    //加载数据到弹出层
+                    openUpdateUser(data);
+                    //同步更新缓存对应的值
+                    //编辑保存
+                    //修改数据，并把数据发送到后端
+                    form.on("submit(dosubmit1)", function (message) {
+                        let newparams = JSON.stringify(message.field);
+                        $.ajax({
+                            url: '/user/edit',
+                            type: "POST",
+                            dataType: "json",
+                            data: {'newparams': newparams},
+                            beforeSend: function () {
+                                layer.load({
+                                    shade: [0.1, '#fff'] //0.1透明度的白色背景
+                                });
+                            },
+                            success: function (res) {
+                                let returnCode = res.code;
+                                layer.closeAll('loading');
+                                    layer.msg("修改成功", {icon: 6});
+                                    // 更新被编辑那条记录
+                                    setTimeout(function () {
+                                        obj.update({
+                                            'name': message.field.name,
+                                            'nickname':message.field.nickname,
+                                            'sex': message.field.sex,
+                                            'tel': message.field.tel,
+                                            'location': message.field.location,
+                                            'password':message.field.status,
+                                        });
+                                        layer.closeAll();
+                                    })
+
+                            }
+                        });
+                        return false;
+                    });
+                } else if (layEvent === 'doclose') {
+                    layer.closeAll();
+                }
+            });
+
+
+//打开修改页面，并把数据发送到后端
+            function openUpdateUser(data) {
+                mainIndex = layer.open({
+                    type: 1,
+                    title: "修改用户",
+                    content: $("#addnewdata"),
+                    area: ['800px', '400px'],
+                    success: function (index) {
+                        console.log("33333");
+                        form.val("dataFrm", data);
+                    }
+                })
+            }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        })
+
+    </script>
+</body>
